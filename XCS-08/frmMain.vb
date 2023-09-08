@@ -329,45 +329,45 @@ WOChange:
                 End
             End If
             Reset_PLC()
-                If Not ActivateRackLED() Then
-                    Txt_Msg.Text = Txt_Msg.Text & "--> Unable to communicate with PLC" & vbCrLf
-                    Txt_Msg.Text = Txt_Msg.Text & "--> Change Series fail" & vbCrLf
-                    ReadTagFlag = False
-                    Exit Sub
-                End If
-
-                lbl_WOnos.Text = Tagnos
-                LoadWOfrRFID.JobNos = Tagnos
-                lbl_currentref.Text = Tagref
-                LoadWOfrRFID.JobModelName = Tagref
-                lbl_wocounter.Text = TagQty
-                LoadWOfrRFID.JobQTy = CShort(TagQty)
-                lbl_tagnos.Text = Tagid
-                LoadWOfrRFID.JobRFIDTag = Tagid
-                lbl_ArticleNos.Text = LoadWOfrRFID.JobArticle
-
-                If Tagnos <> "MASTER" Then
-                    If CheckWOExist(Tagnos) Then
-                        LoadWOfrRFID.JobUnitaryCount = Val(RetrieveWOQty(Tagnos))
-                        lbl_currcounter.Text = CStr(LoadWOfrRFID.JobUnitaryCount)
-                    Else
-                        Call AddWO(Tagnos)
-                        LoadWOfrRFID.JobUnitaryCount = 0 'Reset output counter
-                        lbl_currcounter.Text = "0"
-                    End If
-                Else
-                    lbl_currcounter.Text = "0"
-                    LoadWOfrRFID.JobUnitaryCount = 0
-                End If
-
-
-                UpdateStnStatus()
-                Txt_Msg.Text = Txt_Msg.Text & "Change Series completed" & vbCrLf
-                'ErasePSNFileInfo() 'clearing all variable
-                PSNFileInfo.ModelName = LoadWOfrRFID.JobModelName
-                PSNFileInfo.WONos = LoadWOfrRFID.JobNos
+            If Not ActivateRackLED() Then
+                Txt_Msg.Text = Txt_Msg.Text & "--> Unable to communicate with PLC" & vbCrLf
+                Txt_Msg.Text = Txt_Msg.Text & "--> Change Series fail" & vbCrLf
+                ReadTagFlag = False
+                Exit Sub
             End If
-            ReadTagFlag = False
+
+            lbl_WOnos.Text = Tagnos
+            LoadWOfrRFID.JobNos = Tagnos
+            lbl_currentref.Text = Tagref
+            LoadWOfrRFID.JobModelName = Tagref
+            lbl_wocounter.Text = TagQty
+            LoadWOfrRFID.JobQTy = CShort(TagQty)
+            lbl_tagnos.Text = Tagid
+            LoadWOfrRFID.JobRFIDTag = Tagid
+            lbl_ArticleNos.Text = LoadWOfrRFID.JobArticle
+
+            If Tagnos <> "MASTER" Then
+                If CheckWOExist(Tagnos) Then
+                    LoadWOfrRFID.JobUnitaryCount = Val(RetrieveWOQty(Tagnos))
+                    lbl_currcounter.Text = CStr(LoadWOfrRFID.JobUnitaryCount)
+                Else
+                    Call AddWO(Tagnos)
+                    LoadWOfrRFID.JobUnitaryCount = 0 'Reset output counter
+                    lbl_currcounter.Text = "0"
+                End If
+            Else
+                lbl_currcounter.Text = "0"
+                LoadWOfrRFID.JobUnitaryCount = 0
+            End If
+
+
+            UpdateStnStatus()
+            Txt_Msg.Text = Txt_Msg.Text & "Change Series completed" & vbCrLf
+            'ErasePSNFileInfo() 'clearing all variable
+            PSNFileInfo.ModelName = LoadWOfrRFID.JobModelName
+            PSNFileInfo.WONos = LoadWOfrRFID.JobNos
+        End If
+        ReadTagFlag = False
 
 NoChange:
         Dim Station_status As Integer
@@ -468,18 +468,12 @@ ReWrite:
         End Select
     End Sub
 
-    Private Sub Timer2_Tick(sender As Object, e As EventArgs)
-        'PictureBox2.Image = Image.FromFile(INISLIDEPATH & "Network_Data\Presentation\Slide" & SlideCount & ".JPG")
-        'SlideCount = SlideCount + 1
-        'If SlideCount = 6 Then SlideCount = 1
-    End Sub
-
     Private Sub Timer3_Tick(sender As Object, e As EventArgs) Handles Timer3.Tick
 
         PictureBox2.Image = Image.FromFile(INISLIDEPATH & "Slide" & SlideCount & ".JPG")
 
         SlideCount = SlideCount + 1
-        If SlideCount = 6 Then SlideCount = 1
+        If SlideCount = 7 Then SlideCount = 1
     End Sub
 
     Private Function RefCheck(strName As String) As Boolean
@@ -588,14 +582,6 @@ ReWrite:
         End If
     End Sub
 
-    Private Sub CMD_Read_Inputs_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub txtTimeOut_TextChanged(sender As Object, e As EventArgs)
-
-    End Sub
-
     Private Sub Btn_modbus_Click(sender As Object, e As EventArgs) Handles Btn_modbus.Click
         FrmModbus.Show()
     End Sub
@@ -680,25 +666,5 @@ ReWrite:
                           Exit Sub
                       End Sub)
         End If
-    End Sub
-
-    Private Sub RFID_Comm_Load(sender As Object, e As Ports.SerialDataReceivedEventArgs) Handles RFID_Comm.DataReceived
-
-    End Sub
-
-    Private Sub PictureBox2_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub TextBox6_TextChanged(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub GroupBox2_Enter(sender As Object, e As EventArgs) Handles GroupBox2.Enter
-
     End Sub
 End Class
